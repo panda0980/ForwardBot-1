@@ -1,16 +1,14 @@
-FROM python:3.8-alpine
+FROM python:3.9-slim-buster
 
-ENV LANG=C.UTF-8
+RUN apt update && apt upgrade -y
+RUN apt install git -y
 
-RUN apk update && apk add --no-cache alpine-sdk \ 
-                                     python3-dev \
-                                     libffi-dev \
-                                     openssl-dev \
-                        && rm -rf /var/cache/apk/*
+RUN pip3 install -U pip && pip3 install -U -r requirements.txt
+
 COPY ./ /app/
 
 RUN pip install --upgrade pip
-RUN pip install --no-cache-dir -r /app/requirements.txt
+
 
 WORKDIR /app/
 CMD ["python3 -m forwardbot"]
